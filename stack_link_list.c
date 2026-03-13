@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
+// unfin
+
 typedef struct stack_node
 {
     int val;
@@ -19,6 +22,7 @@ stack *create_node(int val)
 {
     stack *newnode = (stack *)malloc(sizeof(stack));
     newnode->val = val;
+    newnode->next = NULL;
     return newnode;
 }
 

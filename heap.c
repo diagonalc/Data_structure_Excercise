@@ -14,6 +14,8 @@ heap *init_heap(int maxsize);
 void insert(heap *h, int val);
 int delete(heap *h);
 void build_heap(heap *h);
+void build_heap_opt(heap *h, int *arr, int a_size);
+void maxheapify(heap *h, int p);
 void percdown(heap *h, int p);
 void print_heap(heap *h);
 void free_heap(heap *h);
@@ -24,7 +26,7 @@ heap *init_heap(int maxsize)
     h->arr = (int *)malloc((maxsize + 1) * sizeof(int));
     h->size = 0;
     h->capacity = maxsize;
-    h->arr[0] = 99999999;
+    h->arr[0] = 99999999; // guard
     return h;
 }
 
@@ -58,6 +60,7 @@ int delete(heap *h)
     return max;
 }
 
+// O(NlogN)
 void build_heap(heap *h)
 {
     int n;
@@ -72,6 +75,32 @@ void build_heap(heap *h)
     h->size = n;
     for (int i = h->size; i > 0; i--)
         percdown(h, i);
+}
+
+// O(N) method
+void build_heap_opt(heap *h, int *arr, int a_size)
+{
+    h->size = a_size;
+    for (int i = 0; i < a_size; i++)
+        h->arr[i + 1] = arr[i];
+    for (int i = h->size / 2; i > 0; i--)
+        maxheapify(h, i);
+}
+
+void maxheapify(heap *h, int p)
+{
+    int l = p * 2, r = p * 2 + 1, largest = p;
+    if (l <= h->size && h->arr[l] > h->arr[largest])
+        largest = l;
+    if (r <= h->size && h->arr[r] > h->arr[largest])
+        largest = r;
+    if (largest != p)
+    {
+        int temp = h->arr[p];
+        h->arr[p] = h->arr[largest];
+        h->arr[largest] = temp;
+        maxheapify(h, largest);
+    }
 }
 
 void percdown(heap *h, int p)
@@ -109,7 +138,8 @@ void print_heap(heap *h)
     printf("\n");
 }
 
-void free_heap(heap *h){
+void free_heap(heap *h)
+{
     free(h->arr);
     free(h);
 }

@@ -66,7 +66,7 @@ node *left_rotate(node *y)
     x->left = y;
     y->right = xl;
     x->colour = y->colour;
-    y->colour = xcolour;
+    y->colour = x->colour;
     x->parent = yp;
     y->parent = x;
     if (xl)

@@ -22,3 +22,4 @@ bool search(node *node_ptr, int val){
 node* insert(node *node_ptr, int val){
     if(node_ptr)
 }
+

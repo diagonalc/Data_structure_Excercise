@@ -328,30 +328,6 @@ void print_tree(node *r)
     }
 }
 
-// hau wing shing
-void print_tree2(node *r)
-{
-    ll_node *current = malloc(sizeof(ll_node));
-    *current = (ll_node){r, NULL};
-    ll_node *end = current;
-    while (current != NULL)
-    {
-        if (current->val != NULL)
-        {
-            printf("%d\n", current->val->val);
-            end->next = malloc(sizeof(ll_node));
-            *end->next = (ll_node){current->val->left, NULL};
-            end->next->next = malloc(sizeof(ll_node));
-            *end->next->next = (ll_node){current->val->right, NULL};
-            end = end->next->next;
-        }
-        ll_node *old = current;
-        current = current->next;
-        free(old);
-    }
-}
-// hau wing shing end
-
 qnode *cqnode(node *ad)
 {
     qnode *newnode = (qnode *)malloc(sizeof(qnode));

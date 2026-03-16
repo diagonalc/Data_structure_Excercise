@@ -10,6 +10,9 @@ typedef struct map
     int size;
 } map;
 
+// functions:
+void dfs_core(map *m, int vertex, int *v);
+
 map *create_map(int size)
 {
     map *m = (map *)malloc(sizeof(map));
@@ -33,7 +36,7 @@ map *insert_vertex(int val, map *m)
 void insert_edge(map *m, int n1, int n2)
 {
     if (n1 > n2)
-        m->arr[(n1 - 1) * n1 / 2 + n2] = 1;
+        m->arr[n1 * (n1 + 1) / 2 + n2] = 1;
     else if (n1 < n2)
         m->arr[n2 * (n2 + 1) / 2 + n1] = 1;
 }
@@ -60,4 +63,17 @@ void dfs_core(map *m, int vertex, int *v)
         if (v[i] == 0 && m->arr[edge_index] == 1)
             dfs_core(m, i, v);
     }
+}
+
+int main()
+{
+    map *m = create_map(5);
+    insert_edge(m, 2, 3);
+    insert_edge(m, 1, 4);
+    insert_edge(m, 3, 1);
+    insert_edge(m, 4, 2);
+    m = insert_vertex(5, m);
+    insert_edge(m, 5, 4);
+    dfs(m, 1);
+    return 0;
 }

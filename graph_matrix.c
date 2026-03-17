@@ -1,0 +1,184 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// adjacency gatrix interpretation
+// G[i][j] in A: i*(i+1)/2+j
+
+// structures:
+typedef struct graph graph;
+typedef struct queue_node qnode;
+typedef struct queue queue;
+
+typedef struct graph
+{
+    int *arr;
+    int size;
+} graph;
+
+typedef struct queue_node
+{
+    int index;
+    struct queue_node *next;
+} qnode;
+
+typedef struct queue
+{
+    struct queue_node *head;
+    struct queue_node *tail;
+    int size;
+} queue;
+
+// functions:
+void dfs_core(graph *g, int vertex, int *v);
+void q_push(queue *q, int index);
+int q_pop(queue *q);
+queue *init_queue(queue *q);
+qnode *create_node(int index);
+void bfs(graph *g, int vertex);
+void dfs_core(graph *g, int vertex, int *v);
+void dfs(graph *g, int vertex);
+void insert_edge(graph *g, int n1, int n2);
+graph *insert_vertex(int val, graph *g);
+graph *create_graph(int size);
+
+graph *create_graph(int size)
+{
+    graph *g = (graph *)malloc(sizeof(graph));
+    g->arr = (int *)malloc((size * (size + 1) / 2) * sizeof(int));
+    for (int i = 0; i < size * (size + 1) / 2; i++)
+        g->arr[i] = 0;
+    g->size = size;
+    return g;
+}
+
+graph *insert_vertex(int val, graph *g)
+{
+    graph *enlarged_graph = create_graph(g->size + 1);
+    for (int i = 0; i < g->size * (g->size + 1) / 2; i++)
+        enlarged_graph->arr[i] = g->arr[i];
+    free(g->arr);
+    free(g);
+    return enlarged_graph;
+}
+
+void insert_edge(graph *g, int n1, int n2)
+{
+    if (n1 > n2)
+        g->arr[n1 * (n1 + 1) / 2 + n2] = 1;
+    else if (n1 < n2)
+        g->arr[n2 * (n2 + 1) / 2 + n1] = 1;
+}
+
+void dfs(graph *g, int vertex)
+{
+    int *visited = (int *)malloc(g->size * sizeof(int));
+    for (int i = 0; i < g->size; i++)
+        visited[i] = 0;
+    dfs_core(g, vertex, visited);
+    printf("\n");
+    free(visited);
+}
+
+void dfs_core(graph *g, int vertex, int *v)
+{
+    v[vertex] = 1;
+    printf("%d ", vertex);
+    for (int i = 0; i < g->size; i++)
+    {
+        if (i == vertex)
+            continue;
+        int edge_index;
+        edge_index = (i < vertex) ? (vertex * (vertex + 1) / 2 + i) : (i * (i + 1) / 2 + vertex);
+        if (v[i] == 0 && g->arr[edge_index] == 1)
+            dfs_core(g, i, v);
+    }
+}
+
+void bfs(graph *g, int vertex)
+{
+    int *visited = (int *)malloc(g->size * sizeof(int));
+    for (int i = 0; i < g->size; i++)
+        visited[i] = 0;
+
+    visited[vertex] = 1;
+    queue *q = init_queue(q);
+    q_push(q, vertex);
+
+    while (q->size != 0)
+    {
+        int re_val = q_pop(q);
+
+        printf("%d ", re_val);
+
+        for (int i = 0; i < g->size; i++)
+        {
+            if (i == re_val)
+                continue;
+            int edge_index;
+            edge_index = (i < re_val) ? (re_val * (re_val + 1) / 2 + i) : (i * (i + 1) / 2 + re_val);
+            if (visited[i] == 0 && g->arr[edge_index] == 1)
+            {
+                visited[i] = 1;
+                q_push(q, i);
+            }
+        }
+    }
+    printf("\n");
+    free(visited);
+}
+
+qnode *create_node(int index)
+{
+    qnode *newnode = (qnode *)malloc(sizeof(qnode));
+    newnode->index = index;
+    newnode->next = NULL;
+    return newnode;
+}
+
+queue *init_queue(queue *q)
+{
+    q = (queue *)malloc(sizeof(queue));
+    q->head = NULL;
+    q->tail = NULL;
+    q->size = 0;
+    return q;
+}
+
+void q_push(queue *q, int index)
+{
+    qnode *newqn = create_node(index);
+
+    if (q->head == NULL)
+    {
+        q->head = newqn;
+        q->tail = newqn;
+        q->size++;
+        return;
+    }
+    q->tail->next = newqn;
+    q->tail = newqn;
+    q->size++;
+}
+
+int q_pop(queue *q)
+{
+    int re = q->head->index;
+    qnode *temp = q->head->next;
+    free(q->head);
+    q->head = temp;
+    q->size--;
+    return re;
+}
+
+int main()
+{
+    graph *g = create_graph(5);
+    insert_edge(g, 2, 3);
+    insert_edge(g, 1, 4);
+    insert_edge(g, 3, 1);
+    insert_edge(g, 4, 2);
+    g = insert_vertex(5, g);
+    bfs(g, 1);
+
+    return 0;
+}

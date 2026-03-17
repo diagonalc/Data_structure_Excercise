@@ -379,6 +379,7 @@ void q_pop(queue *q)
     qnode *temp = q->head->next;
     free(q->head);
     q->head = temp;
+    q->size--;
     return;
 }
 

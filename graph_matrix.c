@@ -100,6 +100,10 @@ void bfs(graph *g, int vertex)
     for (int i = 0; i < g->size; i++)
         visited[i] = 0;
 
+    int level = 0;
+    int last_curLv = vertex;
+    int last_nxtLv;
+
     visited[vertex] = 1;
     queue *q = init_queue(q);
     q_push(q, vertex);
@@ -120,8 +124,15 @@ void bfs(graph *g, int vertex)
             {
                 visited[i] = 1;
                 q_push(q, i);
+                last_nxtLv = i;
             }
         }
+
+        if(re_val == last_curLv){
+            level++;
+            last_curLv = last_nxtLv;
+        }
+
     }
     printf("\n");
     free(visited);

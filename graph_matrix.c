@@ -128,11 +128,11 @@ void bfs(graph *g, int vertex)
             }
         }
 
-        if(re_val == last_curLv){
+        if (re_val == last_curLv)
+        {
             level++;
             last_curLv = last_nxtLv;
         }
-
     }
     printf("\n");
     free(visited);
@@ -179,6 +179,10 @@ int q_pop(queue *q)
     q->head = temp;
     q->size--;
     return re;
+}
+
+void unweighted(queue *q, int v)
+{
 }
 
 int main()

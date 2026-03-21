@@ -5,6 +5,8 @@ typedef struct graph graph;
 typedef struct vnode vnode;
 typedef struct adjnode adjnode;
 typedef struct edge edge;
+typedef struct queue queue;
+typedef struct queue_node qnode;
 
 struct edge
 {
@@ -32,6 +34,68 @@ struct adjnode
     int weight;
     struct adjnode *next;
 };
+
+struct queue
+{
+    int size;
+    struct queue_node *head;
+    struct queue_node *tail;
+};
+
+struct queue_node
+{
+    int val;
+    struct queue_node *next;
+};
+
+// functions:
+graph *create_graph(int verNum);
+void insert_edge(graph *g, edge e);
+graph *build_graph();
+void dfs_core(graph *g, int starting_pt, int *v);
+void dfs(graph *g, int starting_pt);
+void unweighted(graph *g, int v, int *dist, int *path);
+queue *init_queue(queue *q);
+void q_push(queue *q, int val);
+int q_pop(queue *q);
+
+queue *init_queue(queue *q)
+{
+    queue *newq = (queue *)malloc(sizeof(queue));
+    newq->head = NULL;
+    newq->tail = NULL;
+    newq->size = 0;
+    return newq;
+}
+
+void q_push(queue *q, int val)
+{
+    qnode *nqn = (qnode *)malloc(sizeof(qnode));
+    nqn->val = val;
+    nqn->next = NULL;
+    if (q->head == NULL)
+    {
+        q->head = nqn;
+        q->tail = nqn;
+        q->size++;
+        return;
+    }
+
+    q->tail->next = nqn;
+    q->tail = nqn;
+    q->size++;
+    q->tail = nqn;
+}
+
+int q_pop(queue *q)
+{
+    int result = q->head->val;
+    qnode *temp = q->head->next;
+    free(q->head);
+    q->head = temp;
+    q->size--;
+    return result;
+}
 
 graph *create_graph(int verNum)
 {
@@ -75,7 +139,6 @@ graph *build_graph()
     }
     return g;
 }
-void dfs_core(graph *g, int starting_pt, int *v);
 
 void dfs(graph *g, int starting_pt)
 {
@@ -101,9 +164,66 @@ void dfs_core(graph *g, int starting_pt, int *v)
     }
 }
 
+void unweighted(graph *g, int v, int *dist, int *path)
+{
+
+    for (int i = 0; i < g->vertex_num; i++)
+    {
+        dist[i] = -1;
+        path[i] = -1;
+    }
+    dist[v] = 0;
+    queue *q = init_queue(q);
+    q_push(q, v);
+    while (q->size != 0)
+    {
+        int x = q_pop(q);
+        adjnode *cur = g->ver_list[x].edge_head;
+        while (cur != NULL)
+        {
+            int w = cur->ver_index;
+            int temp_dist = dist[x] + 1;
+            if (temp_dist < dist[w] || dist[w] == -1)
+            {
+                dist[w] = temp_dist;
+                path[w] = x;
+                q_push(q, w);
+            }
+            cur = cur->next;
+        }
+    }
+}
+
+void shortest_path(graph *g, int st, int ed, int *dist, int *path)
+{
+    unweighted(g, st, dist, path);
+    if (path[ed] == -1)
+    {
+        printf("No path exists bewteen vertex %d and %d\n", st, ed);
+        return;
+    }
+    int length = dist[ed];
+    int cur = ed;
+    printf("%d ", st);
+    int *p = (int *)malloc(length * sizeof(int));
+    int i = 0;
+    while (cur != st)
+    {
+        p[i] = cur;
+        cur = path[cur];
+        i++;
+    }
+    for (int i = length - 1; i >= 0; i--)
+        printf("%d ", p[i]);
+}
+
 int main()
 {
     graph *g = build_graph();
-    dfs(g, 0);
+    int *dist = (int *)malloc(g->vertex_num * sizeof(int));
+    int *path = (int *)malloc(g->vertex_num * sizeof(int));
+    shortest_path(g, 0, 4, dist, path);
+
+    // dfs(g, 0);
     return 0;
 }

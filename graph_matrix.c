@@ -1,8 +1,11 @@
+/*
+Graph constructed with adjacency matrix
+G[i][j] in A: i*(i+1)/2+j
+
+*/
 #include <stdio.h>
 #include <stdlib.h>
 
-// adjacency gatrix interpretation
-// G[i][j] in A: i*(i+1)/2+j
 
 // structures:
 typedef struct graph graph;
@@ -181,20 +184,18 @@ int q_pop(queue *q)
     return re;
 }
 
-void unweighted(queue *q, int v)
-{
-}
 
 
-int main()
-{
-    graph *g = create_graph(5);
-    insert_edge(g, 2, 3);
-    insert_edge(g, 1, 4);
-    insert_edge(g, 3, 1);
-    insert_edge(g, 4, 2);
-    g = insert_vertex(5, g);
-    bfs(g, 1);
 
-    return 0;
-}
+// int main()
+// {
+//     graph *g = create_graph(5);
+//     insert_edge(g, 2, 3);
+//     insert_edge(g, 1, 4);
+//     insert_edge(g, 3, 1);
+//     insert_edge(g, 4, 2);
+//     g = insert_vertex(5, g);
+//     bfs(g, 1);
+
+//     return 0;
+// }

@@ -1,3 +1,15 @@
+/*
+Graph constructed with adjacency list
+G[i] -> edge(vertex index, *next) -> edge ...
+G[i+1] -> ...
+.
+.
+.
+
+with shortest path function
+*/
+
+
 #include <stdio.h>
 #include <stdlib.h>
 

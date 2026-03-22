@@ -59,7 +59,7 @@ int find(stack *s, int target)
     return -1;
 }
 
-int tarjan(graph *g, )
+int tarjan(graph *g)
 {
 }
 

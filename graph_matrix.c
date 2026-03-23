@@ -5,44 +5,9 @@ G[i][j] in A: i*(i+1)/2+j
 */
 #include <stdio.h>
 #include <stdlib.h>
+#include"graph_matrix.h"
 
 
-// structures:
-typedef struct graph graph;
-typedef struct queue_node qnode;
-typedef struct queue queue;
-
-typedef struct graph
-{
-    int *arr;
-    int size;
-} graph;
-
-typedef struct queue_node
-{
-    int index;
-    struct queue_node *next;
-} qnode;
-
-typedef struct queue
-{
-    struct queue_node *head;
-    struct queue_node *tail;
-    int size;
-} queue;
-
-// functions:
-void dfs_core(graph *g, int vertex, int *v);
-void q_push(queue *q, int index);
-int q_pop(queue *q);
-queue *init_queue(queue *q);
-qnode *create_node(int index);
-void bfs(graph *g, int vertex);
-void dfs_core(graph *g, int vertex, int *v);
-void dfs(graph *g, int vertex);
-void insert_edge(graph *g, int n1, int n2);
-graph *insert_vertex(int val, graph *g);
-graph *create_graph(int size);
 
 graph *create_graph(int size)
 {
@@ -184,18 +149,3 @@ int q_pop(queue *q)
     return re;
 }
 
-
-
-
-// int main()
-// {
-//     graph *g = create_graph(5);
-//     insert_edge(g, 2, 3);
-//     insert_edge(g, 1, 4);
-//     insert_edge(g, 3, 1);
-//     insert_edge(g, 4, 2);
-//     g = insert_vertex(5, g);
-//     bfs(g, 1);
-
-//     return 0;
-// }

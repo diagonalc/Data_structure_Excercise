@@ -1,26 +1,13 @@
+// Acually tarjan is designed for directed graph, but the implementation here is for a undirected graph, the logic is similar though
+
 #include <stdio.h>
 #include <stdlib.h>
-#include "graph_matrix.c"
-#define MAX_VERTEX_NUM 5
+#include "tarjan.h"
+#include "graph_matrix.h"
 
 int time = 1;
 int dfn[MAX_VERTEX_NUM] = {0};
 int low[MAX_VERTEX_NUM] = {0};
-
-typedef struct stack stack;
-
-struct stack
-{
-    int *arr;
-    int size;
-    int capacity;
-};
-
-// functions:
-stack *create_stack(int cap);
-int s_pop(stack *s);
-void s_push(stack *s, int val);
-int find(stack *s, int target);
 
 stack *create_stack(int cap)
 {
@@ -55,17 +42,44 @@ int find(stack *s, int target)
 {
     for (int i = 0; i < s->size; i++)
         if (s->arr[i] == target)
-            return i;
-    return -1;
-}
-
-int tarjan(graph *g)
-{
-}
-
-int main()
-{
-    stack *s = create_stack(5);
-
+            return 1;
     return 0;
+}
+
+void tarjan(graph *g, int v, stack *s)
+{
+    dfn[v] = time;
+    low[v] = time;
+    time++;
+    s_push(s, v);
+    for (int i = 0; i < g->size; i++)
+    {
+        if (i == v)
+            continue;
+        int edge_index;
+        edge_index = (i < v) ? (v * (v + 1) / 2 + i) : (i * (i + 1) / 2 + v);
+        if (g->arr[edge_index] != 0)
+        {
+            if (dfn[i] == 0)
+            {
+                tarjan(g, i, s);
+                low[v] = (low[v] > low[i]) ? low[i] : low[v];
+            }
+            else if (find(s, i)) // check if its within the same strongly connected component
+            {
+                low[v] = (low[v] > low[i]) ? low[i] : low[v];
+            }
+        }
+    }
+
+    if (low[v] == dfn[v])
+    {
+        int cur = -1;
+        while (cur != v)
+        {
+            cur = s_pop(s);
+            printf("%d ", cur);
+        }
+        printf("\n");
+    }
 }

@@ -52,3 +52,12 @@ read a node and push its children into the queue
 - Easy to find all adjacent nodes for a single node
 - Efficient in saving sparse graph
 - Easy to find the degree of a node of a undirected graph
+
+---
+
+### Tarjan:
+To find out all the strongly connected components in a graph.\
+Vertex: (i, j)\
+i: the time stamp when the vertex is visited\
+j: the earlest time stamp the vertex can trace back through edges\
+Implemented through DFS and stack

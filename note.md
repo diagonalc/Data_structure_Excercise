@@ -13,7 +13,7 @@ void delete(llnode **h, int target)
 }
 ```
 
-cur pointer isn't pointing at the entire node itself, but the ```next``` pointer inside the node, in other word, ```&(*cur)->next``` is the address of the variable that store the address of the next node\
+cur pointer isn't pointing at the entire node itself, but the ```next``` pointer inside the node, in other word, ```&(*cur)->next``` is the address of the variable that store the address of the next node  
 (before entering the while loop, where ```cur = h```, it is indeed pointing to the first node)
 
 therefore, ```*cur``` is the address store in the ```next``` pointer in the node, and ```(*cur)->data``` is actually the data in the next node
@@ -24,40 +24,54 @@ meanwhile ```free(temp);``` will free the entire next node instead of the pointe
 
 ---
 ### Tree Traversal techniques
-Depth First Traversal (DFT):\
-Preorder, inorder, postorder\
-Every nodes will be visited for three times\
-Pre/in/post is just about the timing of reading the node\
+Depth First Traversal (DFT):  
+Preorder, inorder, postorder  
+Every nodes will be visited for three times  
+Pre/in/post is just about the timing of reading the node  
 ususal implementation: recursion
 
-Breadth-First Traversal (BFT):\
-Level order traversal\
-ususal implementation: \
-queue\
+Breadth-First Traversal (BFT):  
+Level order traversal  
+ususal implementation:   
+queue  
 read a node and push its children into the queue
 
 ---
 
 
-### Benefits of adjacency matrix:
+### Benefits of adjacency matrix
 - Edges will be recored once only
 - Easy to find all adjacent nodes for a single node
 - Easy to find the degree of a node
 - Efficient in saving dense graph
 
-### Drawbacks:
+### Drawbacks
 - Inefficient (in both time and space) in saving sparse graph
 
-### Benefits of adjacency list:
+### Benefits of adjacency list
 - Easy to find all adjacent nodes for a single node
 - Efficient in saving sparse graph
 - Easy to find the degree of a node of a undirected graph
 
 ---
 
-### Tarjan:
-To find out all the strongly connected components in a graph.\
-Vertex: (i, j)\
-i: the time stamp when the vertex is visited\
-j: the earlest time stamp the vertex can trace back through edges\
+### Tarjan
+To find out all the strongly connected components in a graph.  
+Vertex: (i, j)  
+i: the time stamp when the vertex is visited  
+j: the earlest time stamp the vertex can trace back through edges  
 Implemented through DFS and stack
+
+---
+### Note about header files  
+Including a header is basically copying everything inside the header and pasting it into where you include it.   
+
+What a header should include: declarations, structures  
+What a .c file should include: functions, macros, variables
+
+Why a header file shouldn't include complete functions?  
+As if two .c files included the header, the function will be defined twice, leading to error.  
+
+Then why structures can be included in a header file?  
+Structures can be defined twice in **different** .c file. Meanwhile, header guard (```#ifndef```,  ```#endif```) can prevent repeated defination of a structure in one .c file. 
+

@@ -1,4 +1,4 @@
-// Acually tarjan is designed for directed graph, but the implementation here is for a undirected graph, the logic is similar though
+// Actually, Tarjan is designed for directed graphs, but the implementation here is for undirected graphs, the logic is similar though
 
 #include <stdio.h>
 #include <stdlib.h>

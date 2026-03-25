@@ -7,7 +7,8 @@ typedef struct Max_Heap
     int *arr;
     int size;
     int capacity;
-} heap;
+} heap;  
+
 
 // functions:
 heap *init_heap(int maxsize);

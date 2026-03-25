@@ -37,6 +37,8 @@ heap *init_heap(int maxsize)
     h->capacity = maxsize;
     tnode *t = (tnode *)malloc(sizeof(tnode));
     t->weight = -1;
+    t->left = NULL;
+    t->right = NULL;
     h->arr[0] = t;
     return h;
 }
@@ -49,7 +51,7 @@ void insert(heap *h, tnode *n)
         return;
     }
     int i = ++h->size;
-    while (i > 1 && n->weight < h->arr[i / 2]->weight)
+    while (i > 1 && n->weight < h->arr[i / 2]->weight)  //perc up, finding a suitable location i for the new node
     {
         h->arr[i] = h->arr[i / 2];
         i /= 2;
@@ -67,7 +69,8 @@ tnode *pop(heap *h)
     tnode *top = h->arr[1];
     int parent, child;
     tnode *last = h->arr[h->size--];
-    for (parent = 1; parent * 2 <= h->size; parent = child)
+    //perc down
+    for (parent = 1; parent * 2 <= h->size; parent = child) //make sure that the child exists
     {
         child = parent * 2;
         if ((child != h->size) && (h->arr[child]->weight > h->arr[child + 1]->weight))

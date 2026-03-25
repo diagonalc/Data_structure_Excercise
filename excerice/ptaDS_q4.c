@@ -1,41 +1,59 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct node
 {
-    int add;
+    char add[6];
     int val;
-    int n_add;
-    struct node *next;
+    char n_add[6];
 } node;
 
 int main()
 {
-    int f_add, n, k;
-    scanf("%d %d %d", &f_add, &n, &k);
+    int n, k;
+    char f_add[6];
+    scanf("%s %d %d", f_add, &n, &k);
     node arr[n];
     for (int i = 0; i < n; i++)
-        scanf("%d %d %d", &arr[n].add, &arr[n].val, &arr[n].n_add);
+        scanf(" %s %d %s", arr[i].add, &arr[i].val, arr[i].n_add);
 
     node s_arr[n];
-    int cur = f_add;
-    while (cur != -1)
+    char cur[6];
+    strcpy(cur, f_add);
+    int i = 0;
+    while (strcmp(cur, "-1") != 0)
     {
-        int i = 0;
-        for(int j=i; j < n; j++)
+
+        for (int j = 0; j < n; j++)
         {
-            if (arr[j].add == cur)
+            if (strcmp(arr[j].add, cur) == 0)
             {
                 s_arr[i] = arr[j];
-                cur = arr[j].n_add;
+                strcpy(cur, arr[j].n_add);
+
                 break;
             };
         }
         i++;
     }
+    i = 0;
+    if (n > k)
+    {
+        for (; i+k < n-1; i += k)
+        {
+            for (int j = i + k - 1; j > i - 1; j--)
+            {
+                printf("%s %d %s\n", s_arr[j].add, s_arr[j].val, s_arr[j].n_add);
+            }
+        }
+        
 
-    for (int i = 0; i < n;i++)
-        printf("%d %d %d\n", s_arr[i].add, s_arr[i].val, s_arr[i].n_add);
+    }
+    else{
+        for (int i = 0; i < n;i++)
+            printf("%s %d %s\n", s_arr[i].add, s_arr[i].val, s_arr[i].n_add);
+    }
 
-            return 0;
+    return 0;
 }

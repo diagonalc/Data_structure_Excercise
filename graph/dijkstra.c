@@ -132,13 +132,10 @@ void dijkstra(int st)
         collected[v.v_index] = 1;
         for (int i = 0; i < MAX_VERTEX; i++)
         {
-            if (graph[v][i])
+            if (graph[v][i] && collected[i] == 0)
             {
-                if (collected[i] == 0)
-                {
-                    if ((v.dist + graph[v.v_index][i]) <)
-                }
-            }
+                if ((v.dist + graph[v.v_index][i]) <)
+                        }
         }
     }
 }

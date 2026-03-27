@@ -78,7 +78,7 @@ void h_insert(heap *h, int w, int v_index)
     int i = ++h->size; // starting from 1 heap
     while (i > 1 && h->arr[i / 2].dist > w)
     {
-        h->arr[i].dist = h->arr[i / 2].dist;
+        h->arr[i] = h->arr[i / 2];
         i /= 2;
     }
     h->arr[h->size].v_index = v_index;
@@ -99,8 +99,8 @@ hnode h_pop(heap *h)
     {
         child = parent * 2;
         if ((child != h->size) && (h->arr[child].dist > h->arr[child + 1].dist))
-            child += 1;
-        if (h->arr[child].dist > last.dist)
+            child++;
+        if (h->arr[child].dist = > last.dist)
             break;
         h->arr[parent] = h->arr[child];
     }
@@ -132,10 +132,10 @@ void dijkstra(int st)
         collected[v.v_index] = 1;
         for (int i = 0; i < MAX_VERTEX; i++)
         {
-            if (graph[v][i] && collected[i] == 0)
+            if (graph[v.v_index][i] && collected[i] == 0)
             {
                 if ((v.dist + graph[v.v_index][i]) <)
-                        }
+            }
         }
     }
 }

@@ -38,13 +38,12 @@ struct minheap
 };
 
 int graph[MAX_VERTEX][MAX_VERTEX];
-int path[MAX_VERTEX];
 
 void init_graph()
 {
     for (int i = 0; i < MAX_VERTEX; i++)
         for (int j = 0; j < MAX_VERTEX; j++)
-            graph[i][j] = INFINITY;
+            graph[i][j] = INT_MAX;
 }
 void build_graph()
 {
@@ -64,8 +63,8 @@ heap *init_heap(int cap)
     heap *h = (heap *)malloc(sizeof(heap));
     h->capacity = cap;
     h->size = 0;
-    h->arr = (hnode *)malloc(cap * sizeof(hnode));
-    h->arr[0].dist = -INFINITY;
+    h->arr = (hnode *)malloc((cap + 1) * sizeof(hnode)); // the heap begins to store data from index 1
+    h->arr[0].dist = -INT_MAX;
     h->arr[0].v_index = 0;
     return h;
 }
@@ -73,16 +72,16 @@ heap *init_heap(int cap)
 void h_insert(heap *h, int w, int v_index)
 {
     if (h->size == h->capacity)
-        return -1;
+        return;
 
-    int i = ++h->size; // starting from 1 heap
+    int i = ++h->size; // the heap begins to store data from index 1
     while (i > 1 && h->arr[i / 2].dist > w)
     {
         h->arr[i] = h->arr[i / 2];
         i /= 2;
     }
-    h->arr[h->size].v_index = v_index;
-    h->arr[h->size].dist = w;
+    h->arr[i].v_index = v_index;
+    h->arr[i].dist = w;
 }
 
 hnode h_pop(heap *h)
@@ -100,7 +99,7 @@ hnode h_pop(heap *h)
         child = parent * 2;
         if ((child != h->size) && (h->arr[child].dist > h->arr[child + 1].dist))
             child++;
-        if (h->arr[child].dist = > last.dist)
+        if (h->arr[child].dist >= last.dist)
             break;
         h->arr[parent] = h->arr[child];
     }
@@ -108,13 +107,27 @@ hnode h_pop(heap *h)
     return top;
 }
 
-void dijkstra(int st)
+void h_free(heap *h)
 {
+    free(h->arr);
+    free(h);
+}
+
+void dijkstra(int st, int *dist, int *path)
+{
+    // dist stores the distance from the start to vi, graph stores the weight of a single edge
+
     heap *h = init_heap(10);
     int collected[MAX_VERTEX] = {0};
 
     for (int i = 0; i < MAX_VERTEX; i++)
+    {
+        dist[i] = INT_MAX;
         path[i] = -1;
+    }
+    dist[st] = 0;
+    h_insert(h, 0, st);
+
     for (int i = 0; i < MAX_VERTEX; i++)
     {
         if (graph[st][i])
@@ -127,15 +140,58 @@ void dijkstra(int st)
     while (1)
     {
         hnode v = h_pop(h);
-        if (v.v_index = -1)
+        int vi = v.v_index;
+        int vd = v.dist;
+        if (vi == -1)
             break;
-        collected[v.v_index] = 1;
+        if (vd > dist[vi]) // skip the outdated node, if dist[vi] is shorter than  the distance stores in hnode, there should be a updated hnode inside the heap already
+            continue;
+        ;
+        collected[vi] = 1;
         for (int i = 0; i < MAX_VERTEX; i++)
         {
-            if (graph[v.v_index][i] && collected[i] == 0)
+            if (graph[vi][i] != INT_MAX && collected[i] == 0 && i != st) // if no edge exists between a and b, graph[a][b] equals to INT_MAX
+            // skip when i == st
             {
-                if ((v.dist + graph[v.v_index][i]) <)
+                int new_dist = dist[vi] + graph[vi][i];
+                if (new_dist < dist[i])
+                {
+                    dist[i] = new_dist;
+                    path[i] = vi;
+                    h_insert(h, dist[i], i);
+                }
             }
         }
     }
+    h_free(h);
+}
+
+int main()
+{
+    init_graph();
+    int dist[MAX_VERTEX];
+    int path[MAX_VERTEX];
+    int st = 0;
+    graph[0][1] = 10;
+    graph[0][3] = 5;
+    graph[1][2] = 1;
+    graph[1][3] = 2;
+    graph[2][4] = 4;
+    graph[3][1] = 3;
+    graph[3][2] = 9;
+    graph[3][4] = 2;
+    graph[4][2] = 6;
+    graph[4][0] = 7;
+    dijkstra(st, dist, path);
+    printf("minimum distance from %d:\n", st);
+    for (int i = 0; i < 6; i++)
+    {
+        printf("to %d: ", i);
+        if (dist[i] == INT_MAX)
+            printf("INF\n");
+        else
+            printf("%d\n", dist[i]);
+    }
+
+    return 0;
 }

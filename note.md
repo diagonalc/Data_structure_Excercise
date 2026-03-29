@@ -78,4 +78,13 @@ Structures can be defined twice in **different** .c file. Meanwhile, header guar
 ---
 ### Dijkstra
 To find the shortest path from a vertex to other vertices.
-if a new
+Dijkstra is a kind of greedy algorithm, each time it will choose a vertex that is closest to the current vertex to make an update  
+Time complexity: O(V*ElogV) (optimized with minimum heap)  
+*cannot deal with negative side!  
+let say there are 3 edges, A->B: 5, A->C: 10, C->B: -8, starting from A, it will visit B first and confirm that the shortest path from A to B will be A->B:5, ignoring the C
+
+### Floyd
+To find the shortest path from each vertex in the graph to all vertices.
+Floyd is a kind of dynamic programming, which is different to doing n times of Dijkstra. It will simply go through all the vertices without determinating which one is closer to the current one.  
+Time complexity: O(V^3)
+*can deal with negative edges, as all vertices will be checked 

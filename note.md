@@ -56,10 +56,10 @@ read a node and push its children into the queue
 ---
 
 ### Tarjan
-To find out all the strongly connected components in a graph.  
-Vertex: (i, j)  
-i: the time stamp when the vertex is visited  
-j: the earlest time stamp the vertex can trace back through edges  
+To find out all the strongly connected components in a graph. 
+dfn[i], low[i]  
+dfn: the time stamp when the vertex is visited  
+low: the earlest time stamp the vertex can trace back through edges  
 Implemented through DFS and stack
 
 ---
@@ -75,3 +75,7 @@ As if two .c files included the header, the function will be defined twice, lead
 Then why structures can be included in a header file?  
 Structures can be defined twice in **different** .c file. Meanwhile, header guard (```#ifndef```,  ```#endif```) can prevent repeated defination of a structure in one .c file. 
 
+---
+### Dijkstra
+To find the shortest path from a vertex to other vertices.
+if a new

@@ -1,9 +1,13 @@
+/*
+dijkstra algorithm optimized with minimum heap
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #define MAX_VERTEX 10
 
 /*
+pseudocode:
 void Dijkstra( Vertex s )
 {
     while (1){
@@ -165,6 +169,8 @@ void dijkstra(int st, int *dist, int *path)
     }
     h_free(h);
 }
+
+
 
 int main()
 {

@@ -227,6 +227,7 @@ void shortest_path(graph *g, int st, int ed, int *dist, int *path)
     }
     for (int i = length - 1; i >= 0; i--)
         printf("%d ", p[i]);
+    free(p);
 }
 
 int main()

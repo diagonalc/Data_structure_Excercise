@@ -41,8 +41,33 @@ void floyd(int dist[MAX_VERTEX][MAX_VERTEX], int path[MAX_VERTEX][MAX_VERTEX])
                 if(dist[i][k]+ dist[k][j] < dist[i][j]){
                     dist[i][j] = dist[i][k] + dist[k][j];
                     path[i][j] = k;
+                    /*There are two main ways to construct the path:
+                    1. Store the previous directly connected node of j on the shortest path from i to j
+                    path[i][j] = path[k][j];
+
+                    2. Store one of the intermediate node on the shortest path from i to j
+                    path[i][j] = k;
+
+                     */
                 }
             }
         }
     }
+}
+
+void print_mid_vertex(int path[MAX_VERTEX][MAX_VERTEX], int st, int ed){
+    int k = path[st][ed];
+    if(k == -1)
+        return;
+    printf()
+}
+
+    void print_path(int dist[MAX_VERTEX][MAX_VERTEX], int path[MAX_VERTEX][MAX_VERTEX], int st, int ed)
+{
+    if(dist[st][ed] == INT_MAX){
+        printf("Vertices are not connected");
+        return;
+    }
+
+    printf("%d -> ", st);
 }

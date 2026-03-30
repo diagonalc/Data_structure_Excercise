@@ -35,10 +35,14 @@ void floyd(int dist[MAX_VERTEX][MAX_VERTEX], int path[MAX_VERTEX][MAX_VERTEX])
         }
     }
 
-    for (int k = 0; k < MAX_VERTEX;k++){    //finding the shortest path that get though k
-        for (int i = 0; i < MAX_VERTEX;i++){
-            for (int j = 0; j < MAX_VERTEX;j++){
-                if(dist[i][k]+ dist[k][j] < dist[i][j]){
+    for (int k = 0; k < MAX_VERTEX; k++)
+    { // finding the shortest path that get though k
+        for (int i = 0; i < MAX_VERTEX; i++)
+        {
+            for (int j = 0; j < MAX_VERTEX; j++)
+            {
+                if (dist[i][k] + dist[k][j] < dist[i][j])
+                {
                     dist[i][j] = dist[i][k] + dist[k][j];
                     path[i][j] = k;
                     /*There are two main ways to construct the path:
@@ -55,19 +59,44 @@ void floyd(int dist[MAX_VERTEX][MAX_VERTEX], int path[MAX_VERTEX][MAX_VERTEX])
     }
 }
 
-void print_mid_vertex(int path[MAX_VERTEX][MAX_VERTEX], int st, int ed){
+void print_mid_vertex(int path[MAX_VERTEX][MAX_VERTEX], int st, int ed)
+{
     int k = path[st][ed];
-    if(k == -1)
+    if (k == -1)
         return;
-    printf()
+    print_mid_vertex(path, st, path[st][ed]);
+    printf("-> %d", st);
+    print_mid_vertex(path, path[st][ed], ed);
 }
 
-    void print_path(int dist[MAX_VERTEX][MAX_VERTEX], int path[MAX_VERTEX][MAX_VERTEX], int st, int ed)
+void print_path(int dist[MAX_VERTEX][MAX_VERTEX], int path[MAX_VERTEX][MAX_VERTEX], int st, int ed)
 {
-    if(dist[st][ed] == INT_MAX){
+    if (dist[st][ed] == INT_MAX)
+    {
         printf("Vertices are not connected");
         return;
     }
 
     printf("%d -> ", st);
+    print_mid_vertex(path, st,ed);
+}
+
+int main(){
+    init_graph();
+    int dist[MAX_VERTEX][MAX_VERTEX];
+    int path[MAX_VERTEX][MAX_VERTEX];
+    int st = 0;
+    graph[0][1] = 10;
+    graph[0][3] = 5;
+    graph[1][2] = 1;
+    graph[1][3] = 2;
+    graph[2][4] = 4;
+    graph[3][1] = 3;
+    graph[3][2] = 9;
+    graph[3][4] = 2;
+    graph[4][2] = 6;
+    graph[4][0] = 7;
+    floyd(dist, path);
+    print_path(dist, path, 0, 4);
+    return 0;
 }

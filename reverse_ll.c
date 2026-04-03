@@ -50,24 +50,27 @@ void print_ll(head *h)
         cur = cur->next;
     }
 }
-
+node *reverse(node *h);
 void reverse_ll(head *h, int k)
 {
     node *dummy = create_node(-1);
     dummy->next = h->first_node;
-    node *st, *ed;
-    st = ed = dummy; // while st is the end of last group
+    node *prev_gp_end, *ed;
+    prev_gp_end = ed = dummy; // prev_gp_end is the left boundary
     while (1)
     {
         for (int i = 0; i < k && ed; i++)
-            ed = ed->next;       // ed is the original tail of the current group, which will become the first one after inverted, which the left boundary
-        node *ori_st = st->next; // original start of the current group will become the last one after inverted, which the right boundary
-        node *next_gp_st = ed->next;
-        ed->next = NULL;              // disconnect the current group from the rest of the list
-        st->next = reverse(st->next); // connecting the left boundary
-        ed->next = next_gp_st;
-        st = ed;
+            ed = ed->next; // ed is the original tail of the current group, which will become the first one after inverted, left boundary
+        if (!ed)
+            break;
+        node *ori_st = prev_gp_end->next;               // original start of the current group will become the last one after inverted, which the right boundary
+        node *next_gp_st = ed->next;                    // right boundary
+        ed->next = NULL;                                // disconnect the current group from the rest of the list
+        prev_gp_end->next = reverse(prev_gp_end->next); // connecting the left boundary
+        ori_st->next = next_gp_st;
+        prev_gp_end = ed = ori_st;
     }
+    h->first_node = dummy->next;
 }
 
 node *reverse(node *h)
@@ -99,7 +102,7 @@ int main()
     insert_tail(h, 8);
     insert_tail(h, 9);
     insert_tail(h, 10);
-    inverse_ll(h, 4);
+    reverse_ll(h, 4);
     print_ll(h);
 
     return 0;

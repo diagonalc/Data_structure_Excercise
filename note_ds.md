@@ -63,19 +63,6 @@ low: the earlest time stamp the vertex can trace back through edges
 Implemented through DFS and stack
 
 ---
-### Note about header files  
-Including a header is basically copying everything inside the header and pasting it into where you include it.   
-
-What a header should include: declarations, structures  
-What a .c file should include: functions, macros, variables
-
-Why a header file shouldn't include complete functions?  
-As if two .c files included the header, the function will be defined twice, leading to error.  
-
-Then why structures can be included in a header file?  
-Structures can be defined twice in **different** .c file. Meanwhile, header guard (```#ifndef```,  ```#endif```) can prevent repeated defination of a structure in one .c file. 
-
----
 ### Dijkstra
 To find the shortest path from a vertex to other vertices.
 Dijkstra is a kind of greedy algorithm, each time it will choose a vertex that is closest to the current vertex to make an update  
@@ -88,3 +75,9 @@ To find the shortest path from each vertex in the graph to all vertices.
 Floyd is a kind of dynamic programming, which is different to doing n times of Dijkstra. It will simply go through all the vertices without determinating which one is closer to the current one.  
 Time complexity: O(V^3)
 *can deal with negative edges, as all vertices will be checked 
+
+---
+### Prim: Growing a tree from a node
+To find the Minimum Spanning Tree of a graph.  
+Similar to Dijkstra, it's also a kind of greedy algorithm.  
+Time Complexity: O(V^2) (if not optimized)(optimizaion is usually about the way we traverse through the vertices)  

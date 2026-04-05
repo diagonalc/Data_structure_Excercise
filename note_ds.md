@@ -60,6 +60,7 @@ To find out all the strongly connected components in a graph.
 dfn[i], low[i]  
 dfn: the time stamp when the vertex is visited  
 low: the earlest time stamp the vertex can trace back through edges  
+When low == dfn: its the oldest visited vertex in this SCC --> pop elements in stack until itself  
 Implemented through DFS and stack
 
 ---
@@ -79,5 +80,6 @@ Time complexity: O(V^3)
 ---
 ### Prim: Growing a tree from a node
 To find the Minimum Spanning Tree of a graph.  
+Visiting the vertex with shortest distance to the current MST.  
 Similar to Dijkstra, it's also a kind of greedy algorithm.  
 Time Complexity: O(V^2) (if not optimized)(optimizaion is usually about the way we traverse through the vertices)  

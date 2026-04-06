@@ -10,8 +10,8 @@ typedef struct Min_heap heap;
 
 struct Edge
 {
-    int from;
-    int to;
+    int v1; // undirected graph
+    int v2;
     int weight;
 };
 
@@ -28,7 +28,7 @@ struct Min_heap
     edge edges[MAX_E];
 };
 
-heap *create_heap(int max_size)
+heap *create_heap()
 {
     heap *newheap = (heap *)malloc(sizeof(heap));
     newheap->size = 0;
@@ -60,10 +60,62 @@ edge pop_heap(heap *h)
             h->edges[parent] = h->edges[child];
     }
     h->edges[parent] = last;
+    h->size--;
     return top;
 }
 
-void free_heap(heap* h){
+void free_heap(heap *h)
+{
     free(h->edges);
     free(h);
+}
+
+// Both methods applied path compression
+
+// Method 1:
+// int find(int v, int *parent)
+// {
+//     while (parent[v] != v)
+//     {
+//         parent[v] = parent[parent[v]];
+//         v = parent[v];
+//     }
+//     return v;
+// }
+
+// Method 2:
+int find(int v, int *parent)
+{
+    if (parent[v] != v)
+        parent = find(parent[v], parent);
+    return parent[v];
+}
+
+void merge_tree(int v1, int v2, int *parent)
+{
+}
+
+void kruskal(graph *g)
+{
+    int parent[g->vertex_num];
+    edge mst[MAX_E];
+    heap *h = create_heap();
+    int edge_count = 0;
+    int total_weight = 0;
+
+    for (int i = 0; i < g->edge_num; i++)
+        push_heap(h, g->edges[i]);
+
+    while ((edge_count <= g->edge_num - 1) && h->size)
+    {
+        edge e = pop_heap(h);
+        if (find(e.v1, parent) != find(e.v2, parent))
+        {
+            mst[edge_count] = e;
+            edge_count++;
+        }
+        else
+        {
+        }
+    }
 }

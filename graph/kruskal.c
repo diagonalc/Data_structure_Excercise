@@ -49,7 +49,7 @@ edge pop_heap(heap *h)
     edge top = h->edges[1];
     edge last = h->edges[h->size];
     int parent, child;
-    for (int parent = 1; parent * 2 <= h->size; parent = child)
+    for (parent = 1; parent * 2 <= h->size; parent = child)
     {
         child = parent * 2;
         if (child != h->size && h->edges[child].weight > h->edges[child + 1].weight)
@@ -70,6 +70,14 @@ void free_heap(heap *h)
     free(h);
 }
 
+graph *create_graph()
+{
+    graph *g = (graph *)malloc(sizeof(graph));
+    g->edge_num = 0;
+    g->vertex_num = 0;
+    return g;
+}
+
 // Both methods applied path compression
 
 // Method 1:
@@ -87,17 +95,37 @@ void free_heap(heap *h)
 int find(int v, int *parent)
 {
     if (parent[v] != v)
-        parent = find(parent[v], parent);
+        parent[v] = find(parent[v], parent);
     return parent[v];
 }
 
-void merge_tree(int v1, int v2, int *parent)
+void union_set(int v1, int v2, int *parent, int *rank)
 {
+    int root1 = find(v1, parent);
+    int root2 = find(v2, parent);
+    if (rank[root1] >= rank[root2])
+    {
+        parent[v2] = root1;
+        rank[root1] += rank[root2];
+    }
+    else if (rank[root1] < rank[root2])
+    {
+        parent[v1] = root2;
+        rank[root2] += rank[root1];
+    }
 }
 
 void kruskal(graph *g)
 {
+    // Union find set
     int parent[g->vertex_num];
+    int rank[g->vertex_num];
+    for (int i = 0; i < g->vertex_num; i++)
+    {
+        parent[i] = i; // cannot be -1, or else "find" func. will break
+        rank[i] = 0;
+    }
+
     edge mst[MAX_E];
     heap *h = create_heap();
     int edge_count = 0;
@@ -113,9 +141,25 @@ void kruskal(graph *g)
         {
             mst[edge_count] = e;
             edge_count++;
-        }
-        else
-        {
+            total_weight += e.weight;
+            union_set(e.v1, e.v2, parent, rank);
         }
     }
+
+    if (edge_count != g->vertex_num - 1)
+    {
+        printf("MST does not exist");
+        return;
+    }
+
+    for (int i = 0; i < edge_count; i++)
+        printf("%d -> %d: %d\n", mst[i].v1, mst[i].v2, mst[i].weight);
+    printf("Total Weight: %d", total_weight);
+}
+
+int main()
+{
+    graph *g = create_graph();
+    g->edges[g->edge_num++] = (edge){0, 1, 2};
+    return 0;
 }

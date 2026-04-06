@@ -27,7 +27,6 @@ heap *init_heap(int maxsize)
     h->arr = (int *)malloc((maxsize + 1) * sizeof(int));
     h->size = 0;
     h->capacity = maxsize;
-    
     h->arr[0] = 99999999; // guard
     return h;
 }

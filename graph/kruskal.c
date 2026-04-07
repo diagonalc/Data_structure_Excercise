@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define MAX_E 20
-#define MAX_V 5
+#define MAX_V 10
 #define INF 65535
 
 typedef struct Edge edge;
@@ -33,6 +33,8 @@ heap *create_heap()
     heap *newheap = (heap *)malloc(sizeof(heap));
     newheap->size = 0;
     newheap->edges[0].weight = INF; // guard
+    newheap->edges[0].v1 = -1;
+    newheap->edges[0].v2 = -1;
     return newheap;
 }
 
@@ -48,6 +50,7 @@ edge pop_heap(heap *h)
 {
     edge top = h->edges[1];
     edge last = h->edges[h->size];
+    h->size--; // need to be in front of the for loop!
     int parent, child;
     for (parent = 1; parent * 2 <= h->size; parent = child)
     {
@@ -60,21 +63,15 @@ edge pop_heap(heap *h)
             h->edges[parent] = h->edges[child];
     }
     h->edges[parent] = last;
-    h->size--;
+
     return top;
 }
 
-void free_heap(heap *h)
-{
-    free(h->edges);
-    free(h);
-}
-
-graph *create_graph()
+graph *create_graph(int v_n)
 {
     graph *g = (graph *)malloc(sizeof(graph));
     g->edge_num = 0;
-    g->vertex_num = 0;
+    g->vertex_num = v_n;
     return g;
 }
 
@@ -103,15 +100,18 @@ void union_set(int v1, int v2, int *parent, int *rank)
 {
     int root1 = find(v1, parent);
     int root2 = find(v2, parent);
-    if (rank[root1] >= rank[root2])
+    if (rank[root1] > rank[root2])
     {
-        parent[v2] = root1;
-        rank[root1] += rank[root2];
+        parent[root2] = root1;
     }
     else if (rank[root1] < rank[root2])
     {
-        parent[v1] = root2;
-        rank[root2] += rank[root1];
+        parent[root1] = root2;
+    }
+    else
+    {
+        parent[root2] = root1;
+        rank[root1]++; // rank is the tree height, when heights of root1 and root2 are the same, the height of the merged tree will increase
     }
 }
 
@@ -134,7 +134,7 @@ void kruskal(graph *g)
     for (int i = 0; i < g->edge_num; i++)
         push_heap(h, g->edges[i]);
 
-    while ((edge_count <= g->edge_num - 1) && h->size)
+    while ((edge_count < g->vertex_num - 1) && h->size)
     {
         edge e = pop_heap(h);
         if (find(e.v1, parent) != find(e.v2, parent))
@@ -155,11 +155,21 @@ void kruskal(graph *g)
     for (int i = 0; i < edge_count; i++)
         printf("%d -> %d: %d\n", mst[i].v1, mst[i].v2, mst[i].weight);
     printf("Total Weight: %d", total_weight);
+    free(h);
 }
 
 int main()
 {
-    graph *g = create_graph();
+
+    graph *g = create_graph(5);
     g->edges[g->edge_num++] = (edge){0, 1, 2};
+    g->edges[g->edge_num++] = (edge){0, 3, 6};
+    g->edges[g->edge_num++] = (edge){1, 2, 3};
+    g->edges[g->edge_num++] = (edge){1, 4, 1};
+    g->edges[g->edge_num++] = (edge){2, 4, 4};
+    g->edges[g->edge_num++] = (edge){3, 4, 4};
+    kruskal(g);
+    free(g);
+
     return 0;
 }

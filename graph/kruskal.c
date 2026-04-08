@@ -32,7 +32,7 @@ heap *create_heap()
 {
     heap *newheap = (heap *)malloc(sizeof(heap));
     newheap->size = 0;
-    newheap->edges[0].weight = INF; // guard
+    newheap->edges[0].weight = -INF; // guard Min heap: -inf!
     newheap->edges[0].v1 = -1;
     newheap->edges[0].v2 = -1;
     return newheap;

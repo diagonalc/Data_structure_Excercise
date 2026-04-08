@@ -82,4 +82,10 @@ Time complexity: O(V^3)
 To find the Minimum Spanning Tree of a graph.  
 Visiting the vertex with shortest distance to the current MST.  
 Similar to Dijkstra, it's also a kind of greedy algorithm.  
-Time Complexity: O(V^2) (if not optimized)(optimizaion is usually about the way we traverse through the vertices)  
+Time Complexity: O(V^2) (if not optimized)(optimizaion is usually about the way we traverse through the vertices) 
+
+### Kruskal: Merging Trees
+To find the MST of a graph.  
+Visiting the shortest edge in the graph and union two sets.  
+Greedy algorithm.  
+Time Complexity: O(ElogE) (optimized with minimum heap)

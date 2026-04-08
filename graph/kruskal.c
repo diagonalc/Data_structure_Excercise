@@ -19,7 +19,7 @@ struct Graph
 {
     int vertex_num;
     int edge_num;
-    edge edges[MAX_E];
+    edge edges[MAX_E]; // a bit similar to adjacency list, but storing the edges directly instead of the connected node
 };
 
 struct Min_heap

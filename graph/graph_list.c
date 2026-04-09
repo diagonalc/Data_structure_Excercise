@@ -9,7 +9,6 @@ G[i+1] -> ...
 with shortest path function
 */
 
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -178,7 +177,6 @@ void dfs_core(graph *g, int starting_pt, int *v)
 
 void unweighted(graph *g, int v, int *dist, int *path)
 {
-
     for (int i = 0; i < g->vertex_num; i++)
     {
         dist[i] = -1;

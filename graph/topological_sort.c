@@ -40,7 +40,7 @@ queue *create_queue()
     return q;
 }
 
-void push_q(int val, queue *q)
+void enqueue(int val, queue *q)
 {
     qnode *newqn = create_qnode(val);
     if (q->length)
@@ -56,7 +56,7 @@ void push_q(int val, queue *q)
     q->length++;
 }
 
-int pop_q(queue *q)
+int dequeue(queue *q)
 {
     if (q->length == 0)
         return -1;
@@ -73,15 +73,18 @@ int pop_q(queue *q)
 graph *create_graph(int ver_num)
 {
     graph *g = (graph *)malloc(sizeof(graph));
+    for (int i = 0; i < MAX_V; i++)
+        for (int j = 0; j < MAX_V; j++)
+            g->arr[i][j] = 0;
     g->ver_num = ver_num;
     return g;
 }
 
-void build_graph(graph *g)
+graph *build_graph()
 {
     int n, vn;
     scanf("%d %d", &n, &vn);
-    g = create_graph(vn);
+    graph *g = create_graph(vn);
 
     for (int i = 0; i < n; i++)
     {
@@ -93,19 +96,43 @@ void build_graph(graph *g)
             in_degree[to]++;
         }
     }
+    return g;
+}
+
+void topological_sort(graph *g)
+{
+    queue *q = create_queue();
+    int ct = 0;
+    for (int i = 0; i < g->ver_num; i++)
+        if (in_degree[i] == 0)
+            enqueue(i, q);
+
+    while (q->length)
+    {
+        int v = dequeue(q);
+        printf("%d ", v);
+        ct++;
+        for (int i = 0; i < g->ver_num; i++)
+        {
+            if (g->arr[v][i])
+            {
+                in_degree[i]--;
+                if (in_degree[i] == 0)
+                    enqueue(i, q);
+            }
+        }
+    }
+    if (ct != g->ver_num)
+    {
+        printf("Circuit exists");
+        return;
+    }
 }
 
 int main()
 {
-    queue *q = create_queue();
-    push_q(1, q);
-    push_q(2, q);
-    push_q(3, q);
-    pop_q(q);
-    push_q(4, q);
-    for (int i = 0; i < 3; i++)
-    {
-        printf("%d ", pop_q(q));
-    }
+    graph *g = build_graph();
+    topological_sort(g);
+    free(g);
     return 0;
 }

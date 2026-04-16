@@ -57,7 +57,7 @@ void enqueue(int val, queue *q)
 int dequeue(queue *q)
 {
     if (q->size == 0)
-        return;
+        return -1;
     int re = q->head->val;
     q_node *temp = q->head->next;
     free(q->head);
@@ -72,6 +72,31 @@ int dequeue(queue *q)
     return re;
 }
 
+void leaves(int root, node *t)
+{
+    int first = 0;
+    queue *q = create_queue();
+    enqueue(root, q);
+    while (q->size)
+    {
+        int re = dequeue(q);
+        if (t[re].left != -1)
+            enqueue(t[re].left, q);
+        if (t[re].right != -1)
+            enqueue(t[re].right, q);
+        if (t[re].left == -1 && t[re].right == -1)
+        {
+            if (first == 0)
+            {
+                printf("%d", re);
+                first = 1;
+            }
+            else
+                printf(" %d", re);
+        }
+    }
+}
+
 int main()
 {
     int n;
@@ -79,7 +104,11 @@ int main()
     node arr[n];
     int check[n];
     for (int i = 0; i < n; i++)
+        check[i] = 0;
+
+    for (int i = 0; i < n; i++)
     {
+
         arr[i].index = i;
         char left, right;
         scanf(" %c %c", &left, &right);
@@ -103,6 +132,8 @@ int main()
     for (root = 0; root < n; root++)
         if (check[root] == 0)
             break;
+
+    leaves(root, arr);
 
     return 0;
 }

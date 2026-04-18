@@ -44,19 +44,41 @@ node *bt_core(int pre_l, int pre_r, int in_l, int in_r)
 
 node *build_tree()
 {
-    int root_val = pre[0];
-    int pivot;
-    for (pivot = 0; in[pivot] != root_val; pivot++)
-        ;
-    int in_l = 0, pre_l = 0, in_r = n, pre_r = n;
-    node *r = create_node(root_val);
-    r->left = bt_core(pre_l + 1, pre_l + pivot - in_l, in_l, pivot - 1);
-    r->right = bt_core(pre_l + pivot - in_l + 1, pre_r, pivot + 1, in_r);
-    return r;
+    if (n <= 0)
+        return NULL;
+
+    return bt_core(0, n - 1, 0, n - 1);
+}
+
+void post_order(node* cur)
+{
+    if(cur == NULL)
+        return;
+    post_order(cur->left);
+    post_order(cur->right);
+    printf("%d ", cur->val);
+    return;
 }
 
 int main()
 {
+    n = 6;
+    int test_pre[] = {1, 2, 4, 3, 5, 6};
+    int test_in[] = {4, 2, 1, 5, 3, 6};
+
+    for (int i = 0; i < n; i++)
+    {
+        pre[i] = test_pre[i];
+        in[i] = test_in[i];
+    }
+
+    // 2. Build the tree
+    printf("Building tree...\n");
+    node *root = build_tree();
+
+    // 3. Verify with Postorder Traversal
+    printf("Postorder Traversal (Expected: 4 2 5 6 3 1): \n");
+    post_order(root);
 
     return 0;
 }

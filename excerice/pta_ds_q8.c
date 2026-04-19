@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #define MAX_NODE 30
 
 typedef struct bnode
@@ -9,10 +10,41 @@ typedef struct bnode
     struct bnode *right;
 } node;
 
+typedef struct stack
+{
+    int *arr;
+    int size;
+    int cap;
+} stack;
+
 int pre[MAX_NODE] = {0};
 int in[MAX_NODE] = {0};
 int post[MAX_NODE] = {0};
 int n;
+
+stack *create_stack(int cap)
+{
+    stack *s = (stack *)malloc(sizeof(stack));
+    s->arr = (int *)malloc(cap * sizeof(int));
+    s->size = 0;
+    s->cap = cap;
+    return s;
+}
+
+void push_s(int val, stack *s)
+{
+    if (s->size == s->cap)
+        return;
+    s->arr[s->size++] = val;
+}
+
+int pop_s(stack *s)
+{
+    if (s->size == 0)
+        return -1;
+    int temp = s->arr[--s->size];
+    return temp;
+}
 
 node *create_node(int val)
 {
@@ -49,35 +81,55 @@ node *build_tree()
 
     return bt_core(0, n - 1, 0, n - 1);
 }
-
-void post_order(node* cur)
+int first = 0;
+void post_order(node *cur)
 {
-    if(cur == NULL)
+    if (cur == NULL)
         return;
     post_order(cur->left);
     post_order(cur->right);
-    printf("%d ", cur->val);
+    if (!first)
+    {
+        printf("%d", cur->val);
+        first = 1;
+        return;
+    }
+    printf(" %d", cur->val);
     return;
+}
+
+void get_in_pre()
+{
+    scanf("%d", &n);
+    int ct_pre = 0;
+    int ct_in = 0;
+    stack *s = create_stack(n);
+    while (1)
+    {
+        char temp[5];
+        scanf(" %s", temp);
+        if (!strcmp(temp, "Push"))
+        {
+            int t;
+            scanf(" %d", &t);
+            pre[ct_pre] = t;
+            ct_pre++;
+            push_s(t, s);
+        }
+        else
+        {
+            in[ct_in] = pop_s(s);
+            ct_in++;
+        }
+        if (ct_in == n)
+            break;
+    }
 }
 
 int main()
 {
-    n = 6;
-    int test_pre[] = {1, 2, 4, 3, 5, 6};
-    int test_in[] = {4, 2, 1, 5, 3, 6};
-
-    for (int i = 0; i < n; i++)
-    {
-        pre[i] = test_pre[i];
-        in[i] = test_in[i];
-    }
-
-    // 2. Build the tree
-    printf("Building tree...\n");
+    get_in_pre();
     node *root = build_tree();
-
-    // 3. Verify with Postorder Traversal
-    printf("Postorder Traversal (Expected: 4 2 5 6 3 1): \n");
     post_order(root);
 
     return 0;

@@ -66,6 +66,8 @@ int max(int a, int b)
     return a > b ? a : b;
 }
 
+// not a good approach, O(N^2)
+// better implementation in pta ds q10
 int height(node *root)
 {
     if (root == NULL)
@@ -127,7 +129,7 @@ node *left_rotate(node *y)
 node *insert(node *rnode, int val)
 {
 
-    //BST insert
+    // BST insert
     if (rnode == NULL)
     {
         return cnewnode(val);

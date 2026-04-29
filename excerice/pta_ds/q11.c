@@ -1,19 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 
 int tree[1000] = {0};
 int arr[1000] = {0};
 int num;
 
+int compare(const void *a, const void *b)
+{
+    int *ia = (int *)a;
+    int *ib = (int *)b;
+    return *ia - *ib;
+    // or return *(int *)a - *(int *)b; directly
+}
+
 int get_left_size(int left, int right)
 {
     int n = right - left + 1;
     int h = 0;
-    for (; 1 << h <= n+1; h++)
+    for (; (1 << (h + 1)) - 1 <= n; h++)
         ;
+
     int x = n - (1 << h) + 1;
-    x = (x < (1 << (h - 1))) ? x : 1<<h - 1;
+    x = (x < (1 << (h - 1))) ? x : 1 << (h - 1);
     int l = (1 << (h - 1)) - 1 + x;
     return l;
 }
@@ -33,11 +41,20 @@ void solve(int left, int right, int root)
 
 int main()
 {
-
     scanf("%d", &num);
     for (int i = 0; i < num; i++)
         scanf(" %d", &arr[i]);
+    qsort(arr, num, sizeof(int), compare);
     solve(0, num - 1, 0);
+    int fg = 0;
     for (int i = 0; i < num; i++)
-        printf("%d ", tree[i]);
+    {
+        if (!fg)
+        {
+            printf("%d", tree[i]);
+            fg = 1;
+            continue;
+        }
+        printf(" %d", tree[i]);
+    }
 }

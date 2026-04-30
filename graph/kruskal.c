@@ -123,7 +123,8 @@ void kruskal(graph *g)
     for (int i = 0; i < g->vertex_num; i++)
     {
         parent[i] = i; // cannot be -1, or else "find" func. will break
-        rank[i] = 0;
+        // the default value of each vertex in parent in union-find set is itself
+        rank[i] = 0; // rank: tree height
     }
 
     edge mst[MAX_E];

@@ -95,3 +95,6 @@ Time Complexity: O(ElogE) (optimized with minimum heap)
 To find a legal execution order when things have prerequisites constrains.  
 BFS and topological sort (Kahn's algorithm) both process vertices level by level using a queue. However, BFS decides to enqueue a neighbor if it hasn't been visited yet, while topological sort enqueues a vertex only after all its predecessors have been processed — i.e., when its in-degree drops to zero.  
 Time Complexity: O(V + E) (adjacency list), O(V^2) (adjacency matrix)
+
+---
+### Shell Sort

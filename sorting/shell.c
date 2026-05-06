@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-void shell(int *arr, int n)
+void shell_sort(int *arr, int n)
 {
     for (int d = n / 2; d > 0; d /= 2)
     {
@@ -18,7 +18,7 @@ void shell(int *arr, int n)
 int main()
 {
     int arr[10] = {9, 6, 4, 8, 3, 5};
-    shell(arr, 6);
+    shell_sort(arr, 6);
     for (int i = 0; i < 6; i++)
     {
         printf("%d ", arr[i]);

@@ -32,10 +32,78 @@ heap *createheap(int cap)
     return nh;
 }
 
-void push_h()
-
-    int main()
+void push_h(heap *h, tnode *n)
 {
+    if (h->size == h->cap)
+        return;
+    int i = ++h->size;
+    for (; h->arr[i / 2]->weight > n->weight; i /= 2)
+        h->arr[i] = h->arr[i / 2];
+    h->arr[i] = n;
+}
 
+tnode *pop_h(heap *h)
+{
+    if (h->size == 0)
+        return NULL;
+    tnode *top = h->arr[1];
+    tnode *last = h->arr[h->size];
+    int parent, child;
+    for (parent = 1; parent * 2 <= h->size; parent = child)
+    {
+        child = parent * 2;
+        if (child != h->size && h->arr[child]->weight > h->arr[child + 1]->weight)
+            child++;
+        if (last->weight < h->arr[child]->weight)
+            break;
+        h->arr[parent] = h->arr[child];
+    }
+    h->arr[parent] = last;
+    h->size--;
+    return top;
+}
+
+tnode *huffman_tree(heap *h)
+{
+    int loop_num = h->size - 1;
+    for (int i = 0; i < loop_num; i++)
+    {
+        tnode *t = malloc(sizeof(tnode));
+        t->left = pop_h(h);
+        t->right = pop_h(h);
+        t->weight = t->left->weight + t->right->weight;
+        push_h(h, t);
+    }
+    return pop_h(h);
+}
+
+void build_heap(heap *h, int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        char c;
+        int w;
+        scanf(" %c %d", &c, &w);
+        tnode *t = malloc(sizeof(tnode));
+        t->c = c;
+        t->weight = w;
+        t->left = t->right = NULL;
+        push_h(h, t);
+    }
+}
+
+int wpl(tnode *ht)
+{
+}
+
+int main()
+{
+    int n, m;
+    heap *h = createheap(100);
+    scanf(" %d", &n);
+    build_heap(h, n);
+    tnode *h_tree = huffman_tree(h);
+    scanf(" %d", &m);
+    printf("%d", h_tree->weight);
     return 0;
 }

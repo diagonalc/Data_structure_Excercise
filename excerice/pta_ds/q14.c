@@ -92,8 +92,12 @@ void build_heap(heap *h, int n)
     }
 }
 
-int wpl(tnode *ht)
+int wpl(tnode *ht, int depth)
 {
+    if (ht->left == NULL && ht->right == NULL)
+        return (depth * ht->weight);
+    else
+        return wpl(ht->left, depth + 1) + wpl(ht->right, depth + 1);
 }
 
 int main()

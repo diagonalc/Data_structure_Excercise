@@ -108,6 +108,7 @@ int main()
     build_heap(h, n);
     tnode *h_tree = huffman_tree(h);
     scanf(" %d", &m);
-    printf("%d", h_tree->weight);
+    int w = wpl(h_tree, 0);
+    printf("%d", w);
     return 0;
 }

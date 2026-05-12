@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct h_tree_node
 {
@@ -100,6 +101,38 @@ int wpl(tnode *ht, int depth)
         return wpl(ht->left, depth + 1) + wpl(ht->right, depth + 1);
 }
 
+void check(tnode *sol, int sol_w, int n)
+{
+    char code[n][n];
+    char chars[n];
+
+    for (int i = 0; i < n; i++)
+    {
+        scanf(" %c", &chars[i]);
+        scanf(" %s", code[i]);
+        for (int j = 0; j < i; j++)
+        {
+            if (code[j] == code[i])
+            {
+                printf("No");
+                return;
+            }
+            char ci1[n];
+            strcpy(code[i], ci1);
+            ci1[strlen(code[i]) + 1] = 1;
+            char ci0[n];
+            strcpy(code[i], ci0);
+            ci0[strlen(code[i]) + 1] = 0;
+            if (code[j] == ci1 || code[j] == ci0)
+            {
+                printf("No");
+                return;
+            }
+            char ci_m[n];
+        }
+    }
+}
+
 int main()
 {
     int n, m;
@@ -110,5 +143,6 @@ int main()
     scanf(" %d", &m);
     int w = wpl(h_tree, 0);
     printf("%d", w);
+    check(h_tree, w, n);
     return 0;
 }

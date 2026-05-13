@@ -103,34 +103,34 @@ int wpl(tnode *ht, int depth)
 
 void check(tnode *sol, int sol_w, int n)
 {
-    char code[n][n];
-    char chars[n];
+    // char code[n][n];
+    // char chars[n];
 
-    for (int i = 0; i < n; i++)
-    {
-        scanf(" %c", &chars[i]);
-        scanf(" %s", code[i]);
-        for (int j = 0; j < i; j++)
-        {
-            if (code[j] == code[i])
-            {
-                printf("No");
-                return;
-            }
-            char ci1[n];
-            strcpy(code[i], ci1);
-            ci1[strlen(code[i]) + 1] = 1;
-            char ci0[n];
-            strcpy(code[i], ci0);
-            ci0[strlen(code[i]) + 1] = 0;
-            if (code[j] == ci1 || code[j] == ci0)
-            {
-                printf("No");
-                return;
-            }
-            char ci_m[n];
-        }
-    }
+    // for (int i = 0; i < n; i++)
+    // {
+    //     scanf(" %c", &chars[i]);
+    //     scanf(" %s", code[i]);
+    //     for (int j = 0; j < i; j++)
+    //     {
+    //         if (code[j] == code[i])
+    //         {
+    //             printf("No");
+    //             return;
+    //         }
+    //         char ci1[n];
+    //         strcpy(code[i], ci1);
+    //         ci1[strlen(code[i]) + 1] = 1;
+    //         char ci0[n];
+    //         strcpy(code[i], ci0);
+    //         ci0[strlen(code[i]) + 1] = 0;
+    //         if (code[j] == ci1 || code[j] == ci0)
+    //         {
+    //             printf("No");
+    //             return;
+    //         }
+    //         char ci_m[n];
+    //     }
+    // }
 }
 
 int main()

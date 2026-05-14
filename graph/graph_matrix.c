@@ -5,9 +5,7 @@ G[i][j] in A: i*(i+1)/2+j
 */
 #include <stdio.h>
 #include <stdlib.h>
-#include"graph_matrix.h"
-
-
+#include "graph_matrix.h"
 
 graph *create_graph(int size)
 {
@@ -56,7 +54,7 @@ void dfs_core(graph *g, int vertex, int *v)
         if (i == vertex)
             continue;
         int edge_index;
-        edge_index = (i < vertex) ? (vertex * (vertex + 1) / 2 + i) : (i * (i + 1) / 2 + vertex);
+        edge_index = (i < vertex) ? (vertex * (vertex + 1) / 2 + i) : (i * (i + 1) / 2 + vertex); // compressed index number
         if (v[i] == 0 && g->arr[edge_index] == 1)
             dfs_core(g, i, v);
     }
@@ -148,4 +146,3 @@ int q_pop(queue *q)
     q->size--;
     return re;
 }
-

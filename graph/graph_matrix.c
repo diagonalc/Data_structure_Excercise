@@ -54,7 +54,7 @@ void dfs_core(graph *g, int vertex, int *v)
         if (i == vertex)
             continue;
         int edge_index;
-        edge_index = (i < vertex) ? (vertex * (vertex + 1) / 2 + i) : (i * (i + 1) / 2 + vertex); // compressed index number
+        edge_index = (i < vertex) ? (vertex * (vertex + 1) / 2 + i) : (i * (i + 1) / 2 + vertex); // compressed index number of graphs' nodes in matrix
         if (v[i] == 0 && g->arr[edge_index] == 1)
             dfs_core(g, i, v);
     }

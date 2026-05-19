@@ -131,7 +131,7 @@ void check(tnode *sol, int sol_w, int n)
     //         char ci_m[n];
     //     }
     // }
-    //done nothing...
+    //done nothing....
 }
 
 int main()

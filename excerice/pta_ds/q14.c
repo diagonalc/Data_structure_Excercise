@@ -18,6 +18,7 @@ typedef struct min_heap
     int cap;
 } heap;
 
+
 heap *createheap(int cap)
 {
     heap *nh = malloc(sizeof(heap));

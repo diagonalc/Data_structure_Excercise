@@ -98,3 +98,10 @@ Time Complexity: O(V + E) (adjacency list), O(V^2) (adjacency matrix)
 
 ---
 
+### Quick Sorting
+Find a pivot from the array and divided the array into two  subarray, one side smaller than the pivot and the other is  bigger than the pivot. Than sort both array recursively. 
+Time complexity: O(nlogn)  
+
+Reminder:
+1. Quick sorting is not efficient for smaller scale array, therefore a threshold can be set at the beginning of the code.  
+2. Pivot can be chosen in many ways, like the first/last one, or just randomly choose one. A effective way of choosing pivot is to find the median of some data in the array.

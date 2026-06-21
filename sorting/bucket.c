@@ -43,7 +43,7 @@ node *pop(node *h)
     return re;
 }
 
-void bucket_sort(int a[], int n)
+void bucket_sort(int n)
 {
     node *b[M];
     for (int i = 0; i < M; i++)
@@ -73,8 +73,7 @@ void bucket_sort(int a[], int n)
 
 int main()
 {
-    int a[5];
-    int n = 5;
 
-    bucket_sort(a, 5);
+    int n = 5;
+    bucket_sort(5);
 }

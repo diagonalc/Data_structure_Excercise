@@ -1,6 +1,9 @@
 #include <stdio.h>
+#include <string.h>
 
-typedef struct link_list
+int main()
 {
-    ()
-};
+    char name[10];
+    scanf("%s", name);
+    printf("%s", name);
+}

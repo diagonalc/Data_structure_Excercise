@@ -12,6 +12,7 @@ typedef struct node
 node *create_node(char *name)
 {
     node *stu = malloc(sizeof(node));
+    stu->name = malloc((strlen(name) + 1) * sizeof(char));
     strcpy(stu->name, name);
     stu->next = NULL;
     return stu;
@@ -19,6 +20,7 @@ node *create_node(char *name)
 
 node *insert(node *h, node *n)
 {
+
     if (h == NULL)
     {
         return n;
@@ -32,32 +34,39 @@ node *insert(node *h, node *n)
 
 node *pop(node *h)
 {
-    node *temp = h;
+    if (h == NULL)
+        return NULL;
+
+    node *re = h->next;
+    free(h->name);
     free(h);
-    return temp->next;
+    return re;
 }
 
 void bucket_sort(int a[], int n)
 {
     node *b[M];
-    for (int i = 0; i <= M; i++)
+    for (int i = 0; i < M; i++)
         b[i] = NULL;
     for (int i = 0; i < n; i++)
     {
         int score;
-        char *name;
+        char name[100];
         scanf("%s %d", name, &score);
         node *ns = create_node(name);
         b[score] = insert(b[score], ns);
     }
 
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < M; i++)
     {
-        printf("Score = %d:\n", i);
-        while (b[i])
+        if (b[i])
         {
-            printf("%s\n", b[i]->name);
-            b[i] = pop(b[i]);
+            printf("Score = %d:\n", i);
+            while (b[i])
+            {
+                printf("%s\n", b[i]->name);
+                b[i] = pop(b[i]);
+            }
         }
     }
 }
@@ -66,8 +75,6 @@ int main()
 {
     int a[5];
     int n = 5;
-    char test[10] = "hihi";
-    node *h = create_node(test);
-    printf("%s", h->name);
-    // bucket_sort(a, 5);
+
+    bucket_sort(a, 5);
 }

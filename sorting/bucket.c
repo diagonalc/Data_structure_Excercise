@@ -73,7 +73,6 @@ void bucket_sort(int n)
 
 int main()
 {
-
     int n = 5;
     bucket_sort(5);
 }

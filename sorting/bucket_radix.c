@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define M 101
+#define M 10
 
 typedef struct node
 {
@@ -56,35 +56,58 @@ node *pop(node *h)
     return re;
 }
 
-void bucket_sort(int n)
+void bucket_sort(int a[], int n, int d, int re[])
 {
     node *b[M];
     for (int i = 0; i < M; i++)
         b[i] = NULL;
     for (int i = 0; i < n; i++)
     {
-        int val;
-
-        scanf("%d", &val);
-        node *ns = create_node(val);
-        // b[val] = insert(b[val], ns);
+        node *nn = create_node(a[i]);
+        int temp = a[i];
+        // obtaining the required digit (starting from 0:LSD)
+        while (d)
+            temp /= 10;
+        int det = temp % 10;
+        b[det] = insert(b[det], nn);
     }
 
+    // reading the sorted data and store them into the return array in order
+    int j = 0;
     for (int i = 0; i < M; i++)
     {
-
         while (b[i])
         {
-            printf("%d\n", b[i]->val);
+            re[j] = b[i]->val;
+            j++;
             b[i] = pop(b[i]);
         }
     }
 }
 
+void radix(int a[], int n)
+{
+    int max_d = max_digit(a, n);
+    int d = 0;
+    int re[n];
+    for (int i = 0; i < max_d; i++)
+    {
+        bucket_sort(a, n, d, re);
+        for (int j = 0; j < n; j++)
+        {
+            a[j] = re[j];
+            re[j] = 0;
+        }
+        d++;
+    }
+    for (int i = 0; i < n; i++)
+
+        printf("%d ", a[i]);
+}
+
 int main()
 {
     int n = 5;
-    int a[5] = {0, 12, 57, 120, 2};
-    printf("%d", max_digit(a, 5));
-    // bucket_sort(5);
+    int a[5] = {0, 12, 57, 1200, 2};
+    radix(a, n);
 }

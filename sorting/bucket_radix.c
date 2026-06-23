@@ -61,13 +61,20 @@ void bucket_sort(int a[], int n, int d, int re[])
     node *b[M];
     for (int i = 0; i < M; i++)
         b[i] = NULL;
+
+    printf("temp: ");
     for (int i = 0; i < n; i++)
     {
         node *nn = create_node(a[i]);
         int temp = a[i];
+        printf("%d ", a[i]);
         // obtaining the required digit (starting from 0:LSD)
-        while (d)
+        int temp_d = d;
+        while (temp_d)
+        {
             temp /= 10;
+            temp_d--;
+        }
         int det = temp % 10;
         b[det] = insert(b[det], nn);
     }
@@ -93,21 +100,24 @@ void radix(int a[], int n)
     for (int i = 0; i < max_d; i++)
     {
         bucket_sort(a, n, d, re);
+        printf("\na: ");
         for (int j = 0; j < n; j++)
         {
             a[j] = re[j];
+            printf("%d ", a[j]);
             re[j] = 0;
         }
         d++;
+        printf("d++ \n");
     }
+    printf("Sorted Result:\n");
     for (int i = 0; i < n; i++)
-
         printf("%d ", a[i]);
 }
 
 int main()
 {
     int n = 5;
-    int a[5] = {0, 12, 57, 1200, 2};
+    int a[5] = {8, 8, 12312318, 1208, 9};
     radix(a, n);
 }

@@ -17,7 +17,6 @@ typedef struct queue
     struct queue_node *tail;
     int size;
 } queue;
-queue *q;
 
 void init_graph()
 {
@@ -26,12 +25,13 @@ void init_graph()
             graph[i][j] = 0;
 }
 
-void init_queue()
+queue *init_queue()
 {
-    q = malloc(sizeof(queue));
+    queue *q = malloc(sizeof(queue));
     q->head = NULL;
     q->tail = NULL;
     q->size = 0;
+    return q;
 }
 
 qnode *create_qnode(int val)
@@ -42,7 +42,7 @@ qnode *create_qnode(int val)
     return nn;
 }
 
-void push_q(int val)
+void enqueue(int val, queue *q)
 {
     qnode *nn = create_qnode(val);
     if (q->head == NULL)
@@ -56,7 +56,7 @@ void push_q(int val)
     q->size++;
 }
 
-int pop_q()
+int dequeue(queue *q)
 {
     if (q->head == NULL)
         return -1;
@@ -77,7 +77,7 @@ int pop_q()
     return re;
 }
 
-bool is_empty()
+bool is_empty(queue *q)
 {
     if (q->size == 0)
     {
@@ -96,18 +96,91 @@ void build_graph(int vn, int en)
     }
 }
 
+int is_first = 1;
 void dfs(int cur_v, int vn, int v[MAX_VERTEX])
 {
     v[cur_v] = 1;
+    if (is_first == 1)
+    {
+        printf(" %d ", cur_v);
+        is_first = 0;
+    }
+    else
+        printf("%d ", cur_v);
+
+    // enqueue(cur_v);
+    for (int i = 0; i < vn; i++)
+    {
+        if (i == cur_v)
+            continue;
+        // printf("graph[cur_v][i]=%d \ngraph[i][cur_v]=%d \n v[i]=%d\n", graph[cur_v][i], graph[i][cur_v], v[i]);
+        if ((graph[cur_v][i] || graph[i][cur_v]) && v[i] == 0)
+        {
+            dfs(i, vn, v);
+        }
+    }
+}
+
+void bfs(int cur_v, int vn, int v[MAX_VERTEX])
+{
+    queue *q = init_queue();
+    enqueue(cur_v, q);
+    while (!is_empty(q))
+    {
+        int h = dequeue(q);
+        if (v[h] == 0)
+        {
+            if (is_first == 1)
+            {
+                printf(" %d ", h);
+                is_first = 0;
+            }
+            else
+                printf("%d ", h);
+        }
+
+        v[h] = 1;
+        for (int i = 0; i < vn; i++)
+        {
+            if (i == h)
+                continue;
+            if ((graph[h][i] || graph[i][h]) && v[i] == 0)
+                enqueue(i, q);
+        }
+    }
 }
 
 int main()
 {
-    // int ver_num, edge_num;
-    // scanf("%d %d", &ver_num, &edge_num);
-    // init_graph();
-    // build_graph(ver_num, edge_num);
-    init_queue();
-    
+    int ver_num, edge_num;
+
+    scanf("%d %d", &ver_num, &edge_num);
+    int visited[MAX_VERTEX] = {0};
+    init_graph();
+    build_graph(ver_num, edge_num);
+    for (int i = 0; i < ver_num; i++)
+    {
+        if (visited[i] == 0)
+        {
+            printf("{");
+            dfs(i, ver_num, visited);
+            printf("}\n");
+        }
+        is_first = 1;
+    }
+    for (int i = 0; i < ver_num; i++)
+        visited[i] = 0;
+    is_first = 1;
+    for (int i = 0; i < ver_num; i++)
+    {
+        if (visited[i] == 0)
+        {
+            printf("{");
+            bfs(i, ver_num, visited);
+            printf("}\n");
+        }
+        is_first = 1;
+    }
+
     return 0;
 }

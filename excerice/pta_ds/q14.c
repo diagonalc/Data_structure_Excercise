@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 typedef struct h_tree_node
 {
@@ -18,13 +19,12 @@ typedef struct min_heap
     int cap;
 } heap;
 
-
 heap *createheap(int cap)
 {
     heap *nh = malloc(sizeof(heap));
     nh->size = 0;
     nh->cap = cap;
-    nh->arr = malloc(cap * sizeof(tnode));
+    nh->arr = malloc((cap + 1) * sizeof(tnode *));
     tnode *t = malloc(sizeof(tnode));
     t->c = '/';
     t->left = NULL;
@@ -50,6 +50,7 @@ tnode *pop_h(heap *h)
         return NULL;
     tnode *top = h->arr[1];
     tnode *last = h->arr[h->size];
+    h->size--;
     int parent, child;
     for (parent = 1; parent * 2 <= h->size; parent = child)
     {
@@ -61,7 +62,7 @@ tnode *pop_h(heap *h)
         h->arr[parent] = h->arr[child];
     }
     h->arr[parent] = last;
-    h->size--;
+
     return top;
 }
 
@@ -79,9 +80,10 @@ tnode *huffman_tree(heap *h)
     return pop_h(h);
 }
 
-void build_heap(heap *h, int n)
+void build_heap(heap *h, int n, int f[])
 {
-    for (int i = 0; i < n; i++)
+
+    for (int i = 1; i <= n; i++)
     {
         char c;
         int w;
@@ -89,6 +91,7 @@ void build_heap(heap *h, int n)
         tnode *t = malloc(sizeof(tnode));
         t->c = c;
         t->weight = w;
+        f[i] = w;
         t->left = t->right = NULL;
         push_h(h, t);
     }
@@ -102,49 +105,62 @@ int wpl(tnode *ht, int depth)
         return wpl(ht->left, depth + 1) + wpl(ht->right, depth + 1);
 }
 
-void check(tnode *sol, int sol_w, int n)
+bool check(char code[][100], int f[], int wpl, int n)
 {
-    // char code[n][n];
-    // char chars[n];
+    // 1. wpl test
+    int total_l = 0;
+    for (int i = 1; i <= n; i++)
+    {
+        // printf("%d %d\n", f[i], strlen(code[i]));
+        total_l += f[i] * strlen(code[i]);
+    }
+    if (total_l != wpl)
+        return false;
 
-    // for (int i = 0; i < n; i++)
-    // {
-    //     scanf(" %c", &chars[i]);
-    //     scanf(" %s", code[i]);
-    //     for (int j = 0; j < i; j++)
-    //     {
-    //         if (code[j] == code[i])
-    //         {
-    //             printf("No");
-    //             return;
-    //         }
-    //         char ci1[n];
-    //         strcpy(code[i], ci1);
-    //         ci1[strlen(code[i]) + 1] = 1;
-    //         char ci0[n];
-    //         strcpy(code[i], ci0);
-    //         ci0[strlen(code[i]) + 1] = 0;
-    //         if (code[j] == ci1 || code[j] == ci0)
-    //         {
-    //             printf("No");
-    //             return;
-    //         }
-    //         char ci_m[n];
-    //     }
-    // }
-    //done nothing..........
+    // 2. prefix test
+    else
+    {
+        for (int i = 1; i <= n; i++)
+        {
+            for (int j = 1; j <= n; j++)
+            {
+                if (i == j)
+                    continue;
+                int min = (strlen(code[i]) < strlen(code[j])) ? strlen(code[i]) : strlen(code[j]);
+                if (strncmp(code[i], code[j], min) == 0)
+                    return false;
+            }
+        }
+    }
+
+    return true;
 }
 
 int main()
 {
     int n, m;
-    heap *h = createheap(100);
-    scanf(" %d", &n);
-    build_heap(h, n);
+    char c[30];
+    char code[30][100];
+    heap *h = createheap(70);
+    scanf("%d", &n);
+    int f[30];
+    build_heap(h, n, f);
     tnode *h_tree = huffman_tree(h);
-    scanf(" %d", &m);
     int w = wpl(h_tree, 0);
-    printf("%d", w);
-    check(h_tree, w, n);
+    scanf(" %d", &m);
+    for (int i = 0; i < m; i++)
+    {
+        for (int j = 1; j <= n; j++)
+        {
+            
+            scanf(" %c %s", &c[j], code[j]);
+            // printf("read, j = %d", j);
+        }
+        if (check(code, f, w, n))
+            printf("Yes\n");
+        else
+            printf("No\n");
+    }
+
     return 0;
 }

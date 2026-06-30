@@ -82,7 +82,7 @@ void build_graph(int n, int d)
     }
 }
 
-
+bool dfs(){}
 
 int main()
 {

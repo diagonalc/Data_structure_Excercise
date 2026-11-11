@@ -35,7 +35,6 @@ void print_tree(node t[], int r);
 int is_isomorphic(node t1[], node t2[], int r1, int r2);
 
 
-
 int build_tree(node t[])
 {
     int n = 0;

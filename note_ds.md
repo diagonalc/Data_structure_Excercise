@@ -105,3 +105,4 @@ Time complexity: O(nlogn)
 Reminder:
 1. Quick sorting is not efficient for smaller scale array, therefore a threshold can be set at the beginning of the code.  
 2. Pivot can be chosen in many ways, like the first/last one, or just randomly choose one. A effective way of choosing pivot is to find the median of some data in the array.
+

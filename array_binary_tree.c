@@ -35,7 +35,6 @@ void print_tree(node t[], int r);
 int is_isomorphic(node t1[], node t2[], int r1, int r2);
 
 
-
 int build_tree(node t[])
 {
     int n = 0;
@@ -95,6 +94,7 @@ int is_isomorphic(node t1[], node t2[], int r1, int r2)
     else
         return (is_isomorphic(t1, t2, t1[r1].left, t2[r2].right) && is_isomorphic(t1, t2, t1[r1].right, t2[r2].left));
 }
+
 
 int main()
 {
